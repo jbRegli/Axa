@@ -5,7 +5,7 @@ import csv
 import os
 import extractFeature as EF
 
-def storeFeature(feature, save_dir, save_name):
+def storeFeature(feature, save_dir, save_name, verb=1):
     r"""
     Store the extracted feature in a fileName.csv
 
@@ -32,10 +32,10 @@ def storeFeature(feature, save_dir, save_name):
                     feature[key] = feature_old[key]
 
     # Saving the feature:
-    saveFeature(feature, save_dir, save_name)
+    saveFeature(feature, save_dir, save_name, verb)
 
 
-def saveFeature(feature, save_dir, save_name):
+def saveFeature(feature, save_dir, save_name, verb=1):
     # Saving the feature:
     with open(os.path.join(save_dir, save_name), 'w') as outfile:
         csvWriter = csv.DictWriter(outfile, fieldnames=feature.keys())
@@ -43,5 +43,6 @@ def saveFeature(feature, save_dir, save_name):
         csvWriter.writeheader()
         csvWriter.writerow(feature)
 
-        print("File saved in ", os.path.join(save_dir, save_name))
+        if verb == 1:
+            print("File saved in ", os.path.join(save_dir, save_name))
 

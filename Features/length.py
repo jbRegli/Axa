@@ -12,7 +12,9 @@ def Length(data, feature_dic):
     np_y = np.array(data.y)
 
     # Update the feature dictionary
-    feature_dic['length'] = np.size(np_x)
-
-    return feature_dic
+    if np_x == []:
+        return 0
+    else:
+        feature_dic['length'] = np.size(np_x)
+        return feature_dic
 

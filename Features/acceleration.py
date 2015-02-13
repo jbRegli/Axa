@@ -63,15 +63,28 @@ def Acceleration(data, feature_dic):
     feature_dic['acc_y_std'] = np.std(acc_y)
     feature_dic['acc_std'] = np.std(acc)
 
-    feature_dic['acc_x_len'] = acc_x.size
-    feature_dic['acc_y_len'] = acc_y.size
-    feature_dic['acc_len'] = acc.size
+    feature_dic['acc_x_len'] = acc_x.size / feature_dic['length']
+    feature_dic['acc_y_len'] = acc_y.size / feature_dic['length']
+    feature_dic['acc_len'] = acc.size / feature_dic['length']
 
     # Braking:
     limit = -0.05
     br_x = a_x[a_x < limit]
     br_y = a_y[a_y < limit]
     br = a[a < limit]
+
+    if br_x == []:
+        l_br_x = 0
+    else:
+        l_br_x = br_x.size
+    if br_y == []:
+        l_br_y = 0
+    else:
+        l_br_y = br_y.size
+    if br == []:
+        l_br = 0
+    else:
+        l_br = br.size
 
     feature_dic['br_x'] = br_x
     feature_dic['br_y'] = br_y
@@ -89,9 +102,9 @@ def Acceleration(data, feature_dic):
     feature_dic['br_y_std'] = np.std(br_x)
     feature_dic['br_std'] = np.std(br)
 
-    feature_dic['br_x_len'] = br_x.size
-    feature_dic['br_y_len'] = br_x.size
-    feature_dic['br_len'] = br.size
+    feature_dic['br_x_len'] = l_br_x / feature_dic['length']
+    feature_dic['br_y_len'] = l_br_x / feature_dic['length']
+    feature_dic['br_len'] = l_br / feature_dic['length']
 
     # Acceleration iddle
     a_x_iddle = a_x[a_x<=0][a_x[a_x<=0] >limit]
@@ -99,13 +112,13 @@ def Acceleration(data, feature_dic):
     a_iddle = a[a<=0][a[a<=0] >limit]
 
     feature_dic['a_x_iddle'] = a_x_iddle
-    feature_dic['a_x_iddle_len'] = a_x_iddle.size
+    feature_dic['a_x_iddle_len'] = a_x_iddle.size / feature_dic['length']
 
     feature_dic['a_y_iddle'] = a_y_iddle
-    feature_dic['a_y_iddle_len'] = a_y_iddle.size
+    feature_dic['a_y_iddle_len'] = a_y_iddle.size / feature_dic['length']
 
     feature_dic['a_iddle'] = a_iddle
-    feature_dic['a_iddle_len'] = a_iddle.size
+    feature_dic['a_iddle_len'] = a_iddle.size / feature_dic['length']
 
     return feature_dic
 

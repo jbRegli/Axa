@@ -48,5 +48,8 @@ def TurningSpeed(data, feature_dic):
     feature_dic['rad/v_mean'] = np.mean(rad_v)
     feature_dic['rad/v_std'] = np.std(rad_v)
 
+    feature_dic['rad_len'] = radius[radius != 0].size / \
+                                feature_dic['length']
+
     return feature_dic
 

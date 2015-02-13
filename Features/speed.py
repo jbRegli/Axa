@@ -26,36 +26,48 @@ def Speed(data, feature_dic):
     v_y[0] = 0
     v[0] = 0
 
-    # Create the feature dictionary
-    feature_dic['v_x'] = v_x
-    feature_dic['v_y'] = v_y
-    feature_dic['v'] = v
+    # Distance: (in km)
+    dist = np.sum(v/3600)
+    dist_x = np.sum(np.absolute(v_x)/3600)
+    dist_y = np.sum(np.absolute(v_y)/3600)
 
-    feature_dic['v_mean'] = np.mean(v)
-    feature_dic['v_x_mean'] = np.mean(v_x)
-    feature_dic['v_y_mean'] = np.mean(v_y)
+    # Short trip are discards: (distance < 0.5 km)
+    if dist < 0.5:
+        return 0
+    else:
+        # Create the feature dictionary
+        feature_dic['dist_x'] = dist_x
+        feature_dic['dist_y'] = dist_y
+        feature_dic['dist'] = dist
 
-    feature_dic['v_std'] = np.std(v)
-    feature_dic['v_x_std'] = np.std(v_x)
-    feature_dic['v_y_std'] = np.std(v_y)
+        feature_dic['v_x'] = v_x
+        feature_dic['v_y'] = v_y
+        feature_dic['v'] = v
 
-    feature_dic['v_max'] = max(v)
+        feature_dic['v_mean'] = np.mean(v)
+        feature_dic['v_x_mean'] = np.mean(v_x)
+        feature_dic['v_y_mean'] = np.mean(v_y)
 
-    # Iddle time
-    v_x_iddle = v_x[v_x==0]
-    v_y_iddle = v_y[v_y==0]
-    v_iddle = v[v==0]
+        feature_dic['v_std'] = np.std(v)
+        feature_dic['v_x_std'] = np.std(v_x)
+        feature_dic['v_y_std'] = np.std(v_y)
 
-    feature_dic['v_x_iddle'] = v_x_iddle
-    feature_dic['v_x_iddle_len'] = v_x_iddle.size
+        feature_dic['v_max'] = max(v)
 
-    feature_dic['v_y_iddle'] = v_y_iddle
-    feature_dic['v_y_iddle_len'] = v_y_iddle.size
+        # Iddle time
+        v_x_iddle = v_x[v_x==0]
+        v_y_iddle = v_y[v_y==0]
+        v_iddle = v[v==0]
 
-    feature_dic['v_iddle'] = v_iddle
-    feature_dic['v_iddle_len'] = v_iddle.size
+        feature_dic['v_x_iddle'] = v_x_iddle
+        feature_dic['v_x_iddle_len'] = v_x_iddle.size / feature_dic['length']
 
+        feature_dic['v_y_iddle'] = v_y_iddle
+        feature_dic['v_y_iddle_len'] = v_y_iddle.size / feature_dic['length']
 
-    return feature_dic
+        feature_dic['v_iddle'] = v_iddle
+        feature_dic['v_iddle_len'] = v_iddle.size / feature_dic['length']
+
+        return feature_dic
 
 
