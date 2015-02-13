@@ -23,8 +23,8 @@ def test():
     tic = time.clock()
     k = 1
 
-    driver = 1892
-    trip = 121
+    driver = 1070
+    trip = 55
     data = ED.extractTrip(driver, trip)
 
     feature_dic = length.Length(data, {})

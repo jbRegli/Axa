@@ -28,7 +28,7 @@ import length
 import combineSupervize as CB
 
 
-def generateFeature_all():
+def generateFeature_all(new_info = False):
     dirs = [f for f in os.listdir('./Data/drivers/')]
 
     l_dirs = len(dirs)
@@ -45,12 +45,16 @@ def generateFeature_all():
         #discard_trip_temp = process_trip(driver)
 
         discard_trip_temp =Parallel(n_jobs=num_cores)\
-                                  (delayed(process_trip)(trip,driver) for trip in files)
+                                (delayed(process_trip)(trip,driver, new_info) \
+                                    for trip in files)
 
         for elt in discard_trip_temp:
-            discard_trip.append(elt)
+            if elt != None:
+                discard_trip.append(elt[0])
 
         k+=1
+
+        print discard_trip
 
     tac = time.clock() - tic
 
@@ -70,7 +74,7 @@ def generateFeature_all():
 
 
 
-def process_trip(trip, driver):
+def process_trip(trip, driver, new_info):
     #files = [f[0:-4] for f in os.listdir('./Data/drivers/'+str(driver))]
 
     #l = 1
@@ -83,32 +87,38 @@ def process_trip(trip, driver):
 
         #driver = 1
         #trip = 1
+
+    if new_info == False:
+        file_path = "./Data/Features/" + str(driver) + "/" + str(trip) + ".csv"
+        if os.path.exists(file_path):
+            return
+
     data = ED.extractTrip(driver, trip)
     discard_trip = []
     feature_dic = length.Length(data, {})
 
     if feature_dic == 0:
-        discard_trip.append({driver,trip})
+        discard_trip.append((driver,trip))
         return discard_trip
 
     feature_dic = speed.Speed(data, feature_dic)
     if feature_dic == 0:
-        discard_trip.append({driver,trip})
+        discard_trip.append((driver,trip))
         return discard_trip
 
     feature_dic = acc.Acceleration(data, feature_dic)
     if feature_dic == 0:
-        discard_trip.append({driver,trip})
+        discard_trip.append((driver,trip))
         return discard_trip
 
     feature_dic = length.Length(data, feature_dic)
     if feature_dic == 0:
-        discard_trip.append({driver,trip})
+        discard_trip.append((driver,trip))
         return discard_trip
 
     feature_dic = ts.TurningSpeed(data, feature_dic)
     if feature_dic == 0:
-        discard_trip.append({driver,trip})
+        discard_trip.append((driver,trip))
         return discard_trip
 
     path = "./Data/Features/" + str(driver)
