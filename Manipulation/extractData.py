@@ -40,3 +40,16 @@ def extractTrip(driver_n, trip_n, data_path="./Data/drivers/"):
     data = pd.read_csv(csvFile, skiprows=[0], names=colnames)
 
     return data
+
+
+def extractSupervise(file_name="data.csv", data_path="./Data/Features/"):
+    csvFile = os.path.join(data_path, file_name)
+
+    dataset = pd.read_csv(csvFile, header=0)
+
+    return dataset
+
+
+
+
+

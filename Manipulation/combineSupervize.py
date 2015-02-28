@@ -24,10 +24,14 @@ def combineSupervize(save_dir, save_name, load_dir="./Data/Features/", verb=1):
     first = True
 
     for driver in dirs:
+
         files = [f[0:-4] for f in os.listdir(load_dir + str(driver))]
         print str(driver)
 
         for trip in files:
+
+            print str(driver), " - ", str(trip)
+
             csvFile = load_dir + str(driver) + "/" + str(trip) + ".csv"
 
             features = pd.read_csv(csvFile, header=0)
@@ -39,7 +43,6 @@ def combineSupervize(save_dir, save_name, load_dir="./Data/Features/", verb=1):
             del features['v_x_iddle']
             del features['v_y_iddle']
             del features['v_iddle']
-
 
             del features['radius']
             del features['rad/v']
@@ -60,9 +63,10 @@ def combineSupervize(save_dir, save_name, load_dir="./Data/Features/", verb=1):
             del features['br_x']
             del features['br_y']
 
+            if features.empty:
+                continue
+
             if first == True:
-
-
                 features.to_csv(os.path.join(save_dir, save_name))
                 first = False
             else:

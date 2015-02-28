@@ -4,17 +4,7 @@ import time
 
 from joblib import Parallel, delayed
 import multiprocessing
-"""
-# what are your inputs, and what operation do you want to
-# perform on each input. For example...
-inputs = range(10)
-def processInput(i):
-    return i * i
 
-num_cores = multiprocessing.cpu_count()
-
-results = Parallel(n_jobs=num_cores)(delayed(processInput)(i) for i in inputs)
-"""
 import addPath
 sys.path = addPath.addPath(sys.path)
 
@@ -36,6 +26,7 @@ def generateFeature_all(new_info = False):
     k = 1
     discard_trip = []
 
+    """
     num_cores = multiprocessing.cpu_count()
 
     for driver in dirs:
@@ -62,10 +53,10 @@ def generateFeature_all(new_info = False):
     print("There has been %i discarded trips") %len(discard_trip)
     print(" ")
     print("Tac= ", str(tac))
-
+    """
     print(" ")
     print("Merging into one csv")
-    data = CB.combineSupervize("./Data/Features","test.csv", "./Data/Features/")
+    data = CB.combineSupervize("./Data/Features","data.csv", "./Data/Features/")
 
     return tac, discard_trip
 
